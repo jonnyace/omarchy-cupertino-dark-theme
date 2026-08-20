@@ -2,7 +2,8 @@
 
 A dark, macOS-inspired theme for [Omarchy](https://omarchy.org). Light sibling: [Cupertino Light](https://github.com/jonnyace/omarchy-cupertino-light-theme).
 
-![Cupertino Dark](preview.png)
+![Cupertino Dark desktop](screenshots/dark1.jpg)
+![Cupertino Dark windows](screenshots/dark2.jpg)
 
 System blue accent, frosted shell surfaces, Sequoia-matching 10px rounding, and Yaru-blue-dark icons.
 
