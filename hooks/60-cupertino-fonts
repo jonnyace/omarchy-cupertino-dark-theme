@@ -1,0 +1,84 @@
+#!/bin/bash
+# Apply Apple SF fonts only while a Cupertino theme is active.
+# Other themes get Omarchy's default JetBrains Mono + Adwaita Sans.
+
+THEME_NAME=${1:-}
+
+cupertino=0
+case "$THEME_NAME" in
+  cupertino | cupertino-light | cupertino-dark) cupertino=1 ;;
+esac
+
+has_sf() {
+  fc-list | grep -Fqi -- "SF Mono" && fc-list | grep -Fqi -- "SF Pro Text"
+}
+
+write_cupertino_fontconfig() {
+  mkdir -p "$HOME/.config/fontconfig"
+  cat >"$HOME/.config/fontconfig/fonts.conf" <<'XML'
+<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+<fontconfig>
+  <match target="pattern">
+    <test name="family" qual="any">
+      <string>sans-serif</string>
+    </test>
+    <edit name="family" mode="prepend_first" binding="strong">
+      <string>SF Pro Text</string>
+    </edit>
+  </match>
+  <match target="pattern">
+    <test name="family" qual="any">
+      <string>sans</string>
+    </test>
+    <edit name="family" mode="prepend_first" binding="strong">
+      <string>SF Pro Text</string>
+    </edit>
+  </match>
+  <match target="pattern">
+    <test name="family" qual="any">
+      <string>monospace</string>
+    </test>
+    <edit name="family" mode="prepend_first" binding="strong">
+      <string>SF Mono</string>
+    </edit>
+  </match>
+  <match target="pattern">
+    <test name="family" qual="any">
+      <string>monospace</string>
+    </test>
+    <edit name="family" mode="append" binding="strong">
+      <string>JetBrainsMono Nerd Font</string>
+    </edit>
+  </match>
+</fontconfig>
+XML
+}
+
+apply_cupertino_fonts() {
+  has_sf || return 0
+  omarchy-font-set "SF Mono"
+  write_cupertino_fontconfig
+  gsettings set org.gnome.desktop.interface font-name "SF Pro Text 11"
+  gsettings set org.gnome.desktop.interface document-font-name "SF Pro Text 11"
+  gsettings set org.gnome.desktop.interface monospace-font-name "SF Mono 11"
+  gsettings set org.gnome.desktop.wm.preferences titlebar-font "SF Pro Text Bold 11"
+}
+
+restore_default_fonts() {
+  omarchy-font-set "JetBrainsMono Nerd Font"
+  gsettings set org.gnome.desktop.interface font-name "Adwaita Sans 11"
+  gsettings set org.gnome.desktop.interface document-font-name "Adwaita Sans 11"
+  gsettings set org.gnome.desktop.interface monospace-font-name "Adwaita Mono 11"
+  gsettings set org.gnome.desktop.wm.preferences titlebar-font "Adwaita Sans Bold 11"
+}
+
+using_sf() {
+  gsettings get org.gnome.desktop.interface font-name 2>/dev/null | grep -Fq "SF Pro"
+}
+
+if (( cupertino )); then
+  apply_cupertino_fonts
+elif using_sf; then
+  restore_default_fonts
+fi

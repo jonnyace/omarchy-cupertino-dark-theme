@@ -42,3 +42,11 @@ gsettings set org.gnome.desktop.interface monospace-font-name "SF Mono 11"
 ```
 
 Keep a Nerd Font as a fallback so Omarchy bar icons still render.
+
+Omarchy themes do not set a typeface — `omarchy font set` is system-wide. To apply SF only while Cupertino is active (and restore JetBrains Mono + Adwaita Sans when you switch away):
+
+```bash
+omarchy hook install theme-set ~/.config/omarchy/themes/cupertino-dark/hooks/60-cupertino-fonts
+```
+
+After that, switching to Tokyo Night or anything else drops the Apple fonts.
