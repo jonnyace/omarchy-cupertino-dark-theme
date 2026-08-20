@@ -4,7 +4,7 @@ A dark, macOS-inspired theme for [Omarchy](https://omarchy.org). Light sibling: 
 
 ![Cupertino Dark](preview.png)
 
-System blue accent, frosted shell surfaces, 12px rounding, and Yaru-blue-dark icons.
+System blue accent, frosted shell surfaces, Sequoia-matching 10px rounding, and Yaru-blue-dark icons.
 
 ## Install
 
@@ -25,3 +25,19 @@ Download them from [Every Default macOS Wallpaper in 6K](https://512pixels.net/p
 ```
 
 Then cycle with `Super + Ctrl + Space` or `omarchy theme bg next`.
+
+## Apple fonts (optional)
+
+Cupertino does not bundle Apple's fonts — their license does not allow redistribution. If you want the icing on the cake, download **SF Pro** (UI) and **SF Mono** (terminal) from [Apple's fonts page](https://developer.apple.com/fonts/) (Apple ID required).
+
+On Linux, extract the `.dmg` / `.pkg` and copy the `.otf` / `.ttf` files into `~/.local/share/fonts`, then:
+
+```bash
+fc-cache -f ~/.local/share/fonts
+omarchy font set "SF Mono"
+gsettings set org.gnome.desktop.interface font-name "SF Pro Text 11"
+gsettings set org.gnome.desktop.interface document-font-name "SF Pro Text 11"
+gsettings set org.gnome.desktop.interface monospace-font-name "SF Mono 11"
+```
+
+Keep a Nerd Font as a fallback so Omarchy bar icons still render.
